@@ -18,6 +18,7 @@ function getIssuesRaw() {
       priorityCode: el.getAttribute("priorityCode"),
       reproducibility: el.getAttribute("reproducibility"),
       version: el.getAttribute("version")
+	  note: el.getAttribute("note")
     };
   }
   
@@ -222,6 +223,8 @@ function getLangReportDetails() {
   ret["priority"] = pri ? pri : "Priority";
   var repr = document.getElementById("lang_reproducibility").getAttribute("value");
   ret["reproducibility"] = repr ? repr : "Reproducibility";
+  var repr = document.getElementById("lang_activities_title").getAttribute("value");
+  ret["activities_title"] = repr ? repr : "Activities";
   return ret;
 };
 

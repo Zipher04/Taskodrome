@@ -358,7 +358,7 @@ function createCardOnRollover(panel, rect, issue) {
     if (m_scrollTimer != null)
       return;
 
-    m_popupCard = createPopupCard(evt.stageX, evt.stageY, rect.width, issue.description, issue.severity, issue.priority, issue.reproducibility, panel.canvas);
+    m_popupCard = createPopupCard(evt.stageX, evt.stageY, rect.width, issue.description, issue.severity, issue.priority, issue.reproducibility, issue.note, panel.canvas);
     m_popupPause = POPUP_PAUSE;
     m_stageToUpdate = panel;
   };
@@ -429,6 +429,77 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
   card.addChild(severity);
   card.addChild(priority);
   card.addChild(reproducibility);
+
+  card.x = Math.min(rootCanvas.width - width - 2, x);
+  card.y = Math.min(rootCanvas.height - height - 2, y);
+
+  card.tickEnabled = false;
+  card.mouseEnabled = false;
+
+  return card;
+};
+
+function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorityText, reproducibilityText, noteText, rootCanvas) {
+  var card = new createjs.Container();
+  var height = 0;
+  var width = 0;
+  var offset = 8;
+
+  var maxWidth = getPopupMaxWidth(rootCanvas, cardWidth);
+
+  var description = createHeaderTextPair(m_lang_report_details["description"] + ": ", descriptionText, 12 + offset, maxWidth - 2 * offset);
+  description.x = offset;
+  description.y = offset;
+  width = description.getBounds().width + 2 * offset;
+  height += description.getBounds().height + offset;
+
+  var severity = createHeaderTextPair(m_lang_report_details["severity"] + ": ", severityText, 12 + offset);
+  severity.x = offset;
+  severity.y = Math.round(height);
+  width = Math.max(severity.getBounds().width + 2 * offset, width);
+  maxWidth = Math.max(severity.getBounds().width + 2 * offset, maxWidth);
+  height += severity.getBounds().height;
+
+  //var priority = createHeaderTextPair(m_lang_report_details["priority"] + ": ", priorityText, 12 + offset);
+  //priority.x = offset;
+  //priority.y = Math.round(height);
+  //width = Math.max(priority.getBounds().width + 2 * offset, width);
+  //maxWidth = Math.max(priority.getBounds().width + 2 * offset, maxWidth);
+  //height += priority.getBounds().height;
+
+  //var reproducibility = createHeaderTextPair(m_lang_report_details["reproducibility"] + ": ", reproducibilityText, 12 + offset);
+  //reproducibility.x = offset;
+  //reproducibility.y = Math.round(height);
+  //width = Math.max(reproducibility.getBounds().width + 2 * offset, width);
+  //maxWidth = Math.max(reproducibility.getBounds().width + 2 * offset, maxWidth);
+  //height += reproducibility.getBounds().height;
+
+  var activity = createHeaderTextPair(m_lang_report_details["activities_title"] + ": ", noteText, 12 + offset);
+  activity.x = offset;
+  activity.y = Math.round(height);
+  width = Math.max(activity.getBounds().width + 2 * offset, width);
+  maxWidth = Math.max(activity.getBounds().width + 2 * offset, maxWidth);
+  height += activity.getBounds().height;
+  
+  if (width > maxWidth)
+  {
+    height -= description.getBounds().height;
+
+    description = createHeaderTextPair("Description: ", descriptionText, 12 + offset, width - 2 * offset);
+    description.x = offset;
+    description.y = offset;
+    width = Math.max(description.getBounds().width + 2 * offset, width);
+    height += description.getBounds().height;
+  }
+
+  var back = createRect(width, height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
+
+  card.addChild(back);
+  card.addChild(description);
+  card.addChild(severity);
+  //card.addChild(priority);
+  //card.addChild(reproducibility);
+  card.addChild(activity);
 
   card.x = Math.min(rootCanvas.width - width - 2, x);
   card.y = Math.min(rootCanvas.height - height - 2, y);

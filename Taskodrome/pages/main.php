@@ -95,6 +95,12 @@
       $issues_array_html .= 'priorityCode="'.$t_row->priority.'" ';
       $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
       $issues_array_html .= 'version="'.$t_row->target_version.'" ';
+	  $t_bug_note_id = bugnote_get_latest_id( $t_row->id );
+	  if ( 0 == $t_bug_note_id )
+		  $t_bug_note = "";
+	  else
+		  $t_bug_note = bugnote_get_text( $t_bug_note_id );
+	  $issues_array_html .= 'note="'. $t_bug_note .'" ';
       $issues_array_html .= '></p>';
 
       $t_row_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
@@ -192,6 +198,8 @@
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
     print '<p id="lang_reproducibility" value="'. lang_get("reproducibility") .'"></p>';
+	print '<p id="lang_activities_title" value="'. lang_get( "activities_title" ) .'"></p>';
+	
 
     print '<p id="lang_no_relations_msg" value="' . plugin_lang_get("no_relations_message") . '"></p>';
     print '</div>';
