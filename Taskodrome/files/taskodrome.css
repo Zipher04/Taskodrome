@@ -89,6 +89,13 @@
   color: #428AC8;
 }
 
+#checkbox_group_by_project {
+  position: relative;
+  margin-left: 1.5em;
+  top: 0.3em;
+  color: #428AC8;
+}
+
 .checkbox_label {
   color: #428AC8;
   font-size: 10pt;

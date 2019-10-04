@@ -17,7 +17,8 @@ function getIssuesRaw() {
       priority: el.getAttribute("priority"),
       priorityCode: el.getAttribute("priorityCode"),
       reproducibility: el.getAttribute("reproducibility"),
-      version: el.getAttribute("version")
+      version: el.getAttribute("version"),
+      project_name: el.getAttribute("project_name"),
     };
   }
   
@@ -209,6 +210,17 @@ function getVersions() {
   for (var i = 0, l = versions.length; i != l; ++i) {
     ret.push(versions[i].getAttribute("value"));
   }
+  return ret;
+};
+
+function getProjectNames() {
+  var ret = [];
+  var projects = document.getElementsByClassName("projectName");
+  for (var i = 0, l = projects.length; i != l; ++i) {
+    ret.push(projects[i].getAttribute("value"));
+  }
+  ret.sort();
+  //console.log(ret);
   return ret;
 };
 

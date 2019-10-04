@@ -29,5 +29,6 @@ $s_plugin_Taskodrome_hidden_users_label = 'Hidden users';
 $s_plugin_Taskodrome_hidden_users_hint = 'Semicolon-separated list';
 
 $s_plugin_Taskodrome_empty_version_label = 'Show empty versions';
+$s_plugin_Taskodrome_group_by_project_label = 'Group by projects';
 
 $s_plugin_Taskodrome_no_relations_message = 'No relations between issues';

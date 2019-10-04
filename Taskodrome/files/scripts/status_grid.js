@@ -56,9 +56,10 @@ function draw_st() {
   panelCanvas.height = m_parentSize_st.height;
 
   var show_empty_versions = document.getElementById("checkbox_version").checked;
+  var is_sort_by_project = document.getElementById("checkbox_group_by_project").checked;
 
   createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, panelCanvas, tab_c2,
-              true, m_selectedCard_st, m_parentSize_st, onPressUp_st, show_empty_versions, m_columnWidth_st, m_tableScheme_st);
+              true, m_selectedCard_st, m_parentSize_st, onPressUp_st, show_empty_versions, is_sort_by_project, m_columnWidth_st, m_tableScheme_st);
   var tab_c2_width = parseInt(tab_c2_style.getPropertyValue("width")) - border_width;
   if (!m_redrawn_st && (panelCanvas.width > tab_c2_width)) {
     m_redrawn_st = true;

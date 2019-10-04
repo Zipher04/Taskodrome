@@ -3,6 +3,7 @@ var m_cooldown_period;
 var m_allowed_statuses_map;
 var m_status_color_map;
 var m_versions;
+var m_projectNames;
 var m_lang_report_details;
 var m_auto_set_status_to_assigned;
 
@@ -54,6 +55,25 @@ function setVersionVisibility() {
   checkbox_version.onclick = onCheckboxClick;
 };
 
+function setProjectVisibility() {
+  var checkbox_group_by_project = document.getElementById("checkbox_group_by_project");
+  var group_by_projects = sessionStorage.getItem("group_by_projects");
+  if (group_by_projects != null) {
+    group_by_projects = (group_by_projects == "true");
+    checkbox_group_by_project.checked = group_by_projects;
+  } else {
+    group_by_projects = checkbox_group_by_project.checked;
+    sessionStorage.setItem("group_by_projects", group_by_projects);
+  }
+  console.log("group_by_projects - " + group_by_projects);
+
+  function onCheckboxClick() {
+    sessionStorage.setItem("group_by_projects", checkbox_group_by_project.checked);
+    fullRedraw();
+  };
+  checkbox_group_by_project.onclick = onCheckboxClick;
+};
+
 function pageOnLoad() {
   onLoadOpening();
 
@@ -62,10 +82,12 @@ function pageOnLoad() {
   m_allowed_statuses_map = getStatusesAllowanceMap();
   m_status_color_map = getStatusColors();
   m_versions = getVersions();
+  m_projectNames = getProjectNames();
   m_lang_report_details = getLangReportDetails();
   m_auto_set_status_to_assigned = getAutoSetStatusToAssigned();
 
   setVersionVisibility();
+  setProjectVisibility();
   init();
   statusInit();
   relationshipInit();

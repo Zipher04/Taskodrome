@@ -95,6 +95,8 @@
       $issues_array_html .= 'priorityCode="'.$t_row->priority.'" ';
       $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
       $issues_array_html .= 'version="'.$t_row->target_version.'" ';
+	  $issues_array_html .= 'project_id="'.$t_row->project_id.'" ';
+	  $issues_array_html .= 'project_name="'.project_get_name($t_row->project_id).'" ';
       $issues_array_html .= '></p>';
 
       $t_row_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
@@ -157,10 +159,10 @@
     if( ALL_PROJECTS == $current_project_id ) {
         $t_project_ids_to_check = user_get_all_accessible_projects( $t_user_id, ALL_PROJECTS );
         $t_project_ids = array();
-        foreach ( $t_project_ids_to_check as $current_project_id ) {
-            $t_roadmap_view_access_level = config_get( 'roadmap_view_threshold', null, null, $current_project_id );
-            if( access_has_project_level( $t_roadmap_view_access_level, $current_project_id ) ) {
-                $t_project_ids[] = $current_project_id;
+        foreach ( $t_project_ids_to_check as $t_project_id ) {
+            $t_roadmap_view_access_level = config_get( 'roadmap_view_threshold', null, null, $t_project_id );
+            if( access_has_project_level( $t_roadmap_view_access_level, $t_project_id ) ) {
+                $t_project_ids[] = $t_project_id;
             }
         }
     } else {
@@ -175,6 +177,20 @@
         foreach ( $t_project_version as $t_version )
             $t_versions[] = $t_version;
     }
+	
+	if( ALL_PROJECTS == $current_project_id ) {
+        $t_project_ids = user_get_all_accessible_projects( $t_user_id, ALL_PROJECTS );
+        foreach ( $t_project_ids as $t_project_id ) {
+			print '<p class="projectName" value="'. project_get_name($t_project_id) .'"></p>';
+        }
+    } else {
+        print '<p class="projectName" value="'. project_get_name($current_project_id) .'"></p>';
+        $t_project_ids = user_get_all_accessible_subprojects( $t_user_id, $current_project_id );
+        foreach ( $t_project_ids as $t_project_id ) {
+			print '<p class="projectName" value="'. project_get_name($t_project_id) .'"></p>';
+		}
+    }
+	
     $t_versions = array_reverse( $t_versions );
         
     //$t_versions = version_get_all_rows( $current_project_id );    
@@ -210,6 +226,8 @@
 
     <input type="checkbox" id="checkbox_version">
     <label id="label_version" class="checkbox_label" for="checkbox_version">' . plugin_lang_get("empty_version_label") . '</label>
+    <input type="checkbox" id="checkbox_group_by_project">
+    <label id="label_project" class="checkbox_label" for="checkbox_group_by_project">' . plugin_lang_get("group_by_project_label") . '</label>
 
     <div class="tabs_cont">
     <div id="tab_c1" class="grid">
