@@ -76,6 +76,7 @@ function onPressUp_st(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, m_tableScheme_st);
   var currStatus = getStatusByColumn_st(m_selectedCard_st.sourceIndex.i);
   var newStatus = getStatusByColumn_st(newColumnIndex);
+  var isSortByProject = document.getElementById("checkbox_group_by_project").checked;
 
   if(newColumnIndex == -1
     || !isStatusAllowed(m_selectedCard_st.value.id, currStatus, newStatus)) {
@@ -89,13 +90,16 @@ function onPressUp_st(evt) {
     var status = getStatusByColumn_st(newColumnIndex);
     m_selectedCard_st.value.status = status;
     m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
-    m_selectedCard_st.value.version = m_versions[newVersionIndex];
+    var isSortByProject = document.getElementById("checkbox_group_by_project").checked;
+    if ( !isSortByProject ) {
+        m_selectedCard_st.value.version = m_versions[newVersionIndex];
+    }
 
     var handler_id = m_selectedCard_st.value.handler_id;
     var bug_id = m_selectedCard_st.value.id;
     var version = m_selectedCard_st.value.version;
     update_issue(bug_id, handler_id, version, status);
-  } else if(newVersionIndex != -1 && m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
+  } else if(newVersionIndex != -1 && !isSortByProject && m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
     m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard_st.value.version = m_versions[newVersionIndex];
 

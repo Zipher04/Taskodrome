@@ -287,7 +287,6 @@ function createCardsByProject(panel, issues, cardDescArray, selectedCard, colNum
   var onMousedown = createCardOnMousedown(panel, selectedCard, cardDescArray, issues);
   var onPressmove = createCardOnPressmove(panel, selectedCard);
   var onRollout = createCardOnRollout(panel);
-	console.log("!!!New!!!"+m_projectNames.length);
   for(var v_i = 0, l = m_projectNames.length; v_i != l; ++v_i) {
     var start_y = tableSchemeOut.headerHeight + 2 * CARD_V_OFFSET + lower_edge;
     tableSchemeOut.versionBorders.push(start_y);
@@ -295,7 +294,6 @@ function createCardsByProject(panel, issues, cardDescArray, selectedCard, colNum
 
     var no_cards_w_version = true;
     var ver = m_projectNames[v_i];
-	console.log("Project: "+ver);
     for(var i = 0; i < colNumber; ++i) {
       var x = CARD_H_OFFSET + (H_OFFSET + i * colSizeOut.width);
       var y = start_y + ((lower_edge == 0) ? 0 : (2 * CARD_V_OFFSET + VERSION_DELIMITER_WIDTH / 2));
@@ -305,7 +303,6 @@ function createCardsByProject(panel, issues, cardDescArray, selectedCard, colNum
       for(var k = 0, issuesNumber = issues[i].length; k < issuesNumber; ++k) {
         if (issues[i][k].project_name != ver)
           continue;
-		console.log("Issue: "+issues[i][k].summary);
         var rect = {
           x : x,
           y : y,

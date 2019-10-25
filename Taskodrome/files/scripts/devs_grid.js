@@ -71,6 +71,8 @@ function draw() {
 function onPressUp(evt) {
   var newVersionIndex = computeVersionIndex(evt.stageY, m_tableScheme);
   var newColumnIndex = computeColumnIndex(evt.stageX, m_tableScheme);
+  var isSortByProject = document.getElementById("checkbox_group_by_project").checked;
+  
   if(newColumnIndex == -1) {
     newColumnIndex = m_selectedCard.sourceIndex.i;
   }
@@ -89,10 +91,12 @@ function onPressUp(evt) {
     var bug_id = m_selectedCard.value.id;
     var handler_id = user_ids[newColumnIndex];
     m_selectedCard.value.handler_id = handler_id;
-    m_selectedCard.value.version = m_versions[newVersionIndex];
+    if ( !isSortByProject ) {
+        m_selectedCard.value.version = m_versions[newVersionIndex];
+	}
     var version = m_selectedCard.value.version;
     update_issue(bug_id, handler_id, version);
-  } else if(newVersionIndex != -1 && m_selectedCard.value.version != m_versions[newVersionIndex]) {
+  } else if(newVersionIndex != -1 && !isSortByProject && m_selectedCard.value.version != m_versions[newVersionIndex]) {
     m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard.value.version = m_versions[newVersionIndex];
 
